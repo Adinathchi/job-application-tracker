@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Boarding — Job Application Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ===== ROBOT GREETING BANNER ===== -->
+    <div class="mascot-banner" id="mascotBanner">
+      <div class="robot" id="robot">
+        <div class="robot__antenna"><span class="robot__antenna-tip" id="antennaTip"></span></div>
+        <div class="robot__head">
+          <div class="robot__eye left"></div>
+          <div class="robot__eye right"></div>
+          <div class="robot__mouth"></div>
+        </div>
+        <div class="robot__body">
+          <div class="robot__light"></div>
+        </div>
+      </div>
+      <div class="speech-bubble">
+        <p class="speech-main" id="greetingText">Hey there!</p>
+        <p class="speech-sub" id="greetingSub">Loading your board…</p>
+      </div>
+    </div>
+
+    <!-- ===== HEADER / DEPARTURE BOARD ===== -->
+    <header class="board-header">
+      <div class="board-header__title">
+        <span class="eyebrow">GATE · CAREER</span>
+        <h1>Boarding<span class="cursor-dot">.</span></h1>
+        <p class="subtitle">Every application is a flight. Track where each one is headed.</p>
+      </div>
+
+      <div class="stats-strip" id="statsStrip">
+        <div class="stat">
+          <span class="stat__value" id="statTotal">0</span>
+          <span class="stat__label">Total</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value" id="statApplied">0</span>
+          <span class="stat__label">Applied</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value" id="statInterview">0</span>
+          <span class="stat__label">In Flight</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value" id="statOffer">0</span>
+          <span class="stat__label">Landed</span>
+        </div>
+        <div class="stat stat--rate">
+          <span class="stat__value" id="statRate">0%</span>
+          <span class="stat__label">Response rate</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== TOOLBAR ===== -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search company or role…" />
+      </div>
+      <div class="toolbar__actions">
+        <button class="btn btn--ghost" id="historyBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          History
+        </button>
+        <button class="btn btn--primary" id="addBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Log application
+        </button>
+        <button class="btn btn--icon" id="logoutBtn" title="Log out">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== BOARD ===== -->
+    <main class="board" id="board">
+
+      <section class="column" data-status="applied">
+        <div class="column__head">
+          <span class="column__code">01</span>
+          <h2>Applied</h2>
+          <span class="column__count" id="countApplied">0</span>
+        </div>
+        <div class="column__body dropzone" data-status="applied" id="col-applied"></div>
+      </section>
+
+      <section class="column" data-status="interview">
+        <div class="column__head">
+          <span class="column__code">02</span>
+          <h2>OA / Interview</h2>
+          <span class="column__count" id="countInterview">0</span>
+        </div>
+        <div class="column__body dropzone" data-status="interview" id="col-interview"></div>
+      </section>
+
+      <section class="column" data-status="offer">
+        <div class="column__head">
+          <span class="column__code">03</span>
+          <h2>Offer</h2>
+          <span class="column__count" id="countOffer">0</span>
+        </div>
+        <div class="column__body dropzone" data-status="offer" id="col-offer"></div>
+      </section>
+
+      <section class="column" data-status="rejected">
+        <div class="column__head">
+          <span class="column__code">04</span>
+          <h2>Rejected</h2>
+          <span class="column__count" id="countRejected">0</span>
+        </div>
+        <div class="column__body dropzone" data-status="rejected" id="col-rejected"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== MODAL: ADD / EDIT ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal__head">
+        <h3 id="modalTitle">Log a new application</h3>
+        <button class="modal__close" id="modalClose">&times;</button>
+      </div>
+
+      <form id="appForm">
+        <input type="hidden" id="cardId" />
+
+        <div class="field">
+          <label for="company">Company *</label>
+          <input type="text" id="company" required placeholder="e.g. Atlassian" />
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="role">Role *</label>
+            <input type="text" id="role" required placeholder="e.g. Frontend Engineer Intern" />
+          </div>
+          <div class="field">
+            <label for="status">Status</label>
+            <select id="status">
+              <option value="applied">Applied</option>
+              <option value="interview">OA / Interview</option>
+              <option value="offer">Offer</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="appliedDate">Date applied</label>
+            <input type="date" id="appliedDate" />
+          </div>
+          <div class="field">
+            <label for="deadline">Next deadline (OA / interview)</label>
+            <input type="date" id="deadline" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="link">Job link</label>
+          <input type="url" id="link" placeholder="https://…" />
+        </div>
+
+        <div class="field">
+          <label for="notes">Notes</label>
+          <textarea id="notes" rows="3" placeholder="Referral name, round details, salary discussed…"></textarea>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="deleteBtn" style="display:none;">Delete</button>
+          <div class="modal__actions-right">
+            <button type="button" class="btn btn--ghost" id="cancelBtn">Cancel</button>
+            <button type="submit" class="btn btn--primary" id="saveBtn">Save application</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: HISTORY TIMELINE ===== -->
+  <div class="modal-overlay" id="historyOverlay">
+    <div class="modal modal--wide">
+      <div class="modal__head">
+        <h3>Application history</h3>
+        <button class="modal__close" id="historyClose">&times;</button>
+      </div>
+      <div class="history-body" id="historyBody">
+        <p class="empty-state">No activity yet</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

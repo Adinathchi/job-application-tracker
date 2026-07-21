@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": "9dcdee54-9e6f-46c8-aa5f-867b4d44015e",
+      "name": "Adinath Chipparage",
+      "email": "adinath@gmail.com",
+      "passwordHash": "$2a$10$8iqv.CI0NlLcFuvzA3mKf.OuZ1EPe736KtbZ4wiaff/MDh3hhKHS2",
+      "createdAt": "2026-07-21T07:29:01.498Z"
+    }
+  ],
+  "applications": [],
+  "history": []
+}
