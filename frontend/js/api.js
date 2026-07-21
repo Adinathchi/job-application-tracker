@@ -3,7 +3,7 @@
  * Change API_BASE here if you deploy the backend somewhere other than localhost.
  */
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://job-application-tracker-1jou.onrender.com/api';
 
 const auth = {
   getToken() {
